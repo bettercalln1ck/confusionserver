@@ -8,8 +8,9 @@ var FileStore=require('session-file-store')(session);
 const mongoose =require('mongoose');
 var passport=require('passport');
 var authenticate=require('./authenticate');
+var config=require('./config');
 
-const url = 'mongodb://localhost:27017/confusionserver';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
 connect .then((db)=>{
@@ -18,7 +19,9 @@ connect .then((db)=>{
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var promoRouter = require('./routes/promorouter');
+var promoRouter = require('./routes/promoRouter');
+var leaderRouter = require('./routes/leaderRouter');
+var dishRouter = require('./routes/dishRouter');
 
 var app = express();
 
@@ -45,7 +48,8 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/promotions',promoRouter);
-
+app.use('/leaders',leaderRouter);
+app.use('/dishes',dishRouter);
 function auth(req,res,next) {
 //	console.log(req.session);
 	
